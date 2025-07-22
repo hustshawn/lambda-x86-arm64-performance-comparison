@@ -1,0 +1,5 @@
+{
+  "operation": "string_processing",
+  "text_size": 15000,
+  "iterations": 1
+}

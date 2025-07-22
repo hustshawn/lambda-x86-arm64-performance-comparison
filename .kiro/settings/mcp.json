@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "awslabs.aws-serverless-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-serverless-mcp-server@latest",
+        "--allow-write",
+        "--allow-sensitive-data-access"
+      ],
+      "env": {
+        "AWS_PROFILE": "default",
+        "AWS_REGION": "us-west-2"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "get_lambda_guidance",
+        "get_iac_guidance",
+        "get_lambda_event_schemas"
+      ]
+    }
+  }
+}

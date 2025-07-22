@@ -1,0 +1,15 @@
+{
+  "httpMethod": "POST",
+  "path": "/process-x86",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "queryStringParameters": null,
+  "body": "{\"operation\": \"mathematical_computation\", \"complexity\": 3000, \"iterations\": 1}",
+  "isBase64Encoded": false,
+  "requestContext": {
+    "httpMethod": "POST",
+    "path": "/dev/process-x86",
+    "stage": "dev"
+  }
+}

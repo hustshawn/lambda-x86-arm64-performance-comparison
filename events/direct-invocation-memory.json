@@ -1,0 +1,5 @@
+{
+  "operation": "memory_intensive",
+  "memory_size_mb": 25,
+  "iterations": 1
+}

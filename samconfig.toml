@@ -1,0 +1,40 @@
+# SAM CLI configuration file for Lambda Performance Comparison
+
+version = 0.1
+
+[default]
+[default.global]
+[default.global.parameters]
+stack_name = "lambda-performance-comparison"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
+
+[default.build]
+[default.build.parameters]
+cached = true
+parallel = true
+
+[default.deploy]
+[default.deploy.parameters]
+confirm_changeset = true
+fail_on_empty_changeset = false
+s3_prefix = "lambda-performance-comparison"
+region = "us-west-2"
+image_repositories = []
+resolve_s3 = true
+parameter_overrides = "Stage=\"dev\""
+
+[default.local_start_api]
+[default.local_start_api.parameters]
+warm_containers = "EAGER"
+debug_port = 5858
+debug_args = "-e debugpy -e listen=0.0.0.0:5858 -e wait_for_client=y -e log_to_stderr=False -e single_threaded=True"
+
+[default.local_invoke]
+[default.local_invoke.parameters]
+warm_containers = "EAGER"
+debug_port = 5858
+debug_args = "-e debugpy -e listen=0.0.0.0:5858 -e wait_for_client=y -e log_to_stderr=False -e single_threaded=True"

@@ -1,0 +1,112 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Lambda Performance Comparison
+  
+  SAM Template for comparing performance between ARM64 and x86_64 architectures
+  using Python 3.11 runtime for data processing workloads.
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: python3.11
+    Environment:
+      Variables:
+        PYTHONPATH: /var/task/src
+    Tracing: Active
+
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+    Description: Deployment stage
+
+Resources:
+  # ARM64 Lambda Function
+  ProcessorFunctionArm64:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - arm64
+      Description: Data processing function running on ARM64 architecture
+      Environment:
+        Variables:
+          ARCHITECTURE: arm64
+      Events:
+        ApiArm64:
+          Type: Api
+          Properties:
+            Path: /process-arm64
+            Method: post
+            RestApiId: !Ref ProcessorApi
+      Policies:
+        - CloudWatchPutMetricPolicy: {}
+        - CloudWatchLogsFullAccess
+        - AWSXRayDaemonWriteAccess
+
+  # x86_64 Lambda Function  
+  ProcessorFunctionX86:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Description: Data processing function running on x86_64 architecture
+      Environment:
+        Variables:
+          ARCHITECTURE: x86_64
+      Events:
+        ApiX86:
+          Type: Api
+          Properties:
+            Path: /process-x86
+            Method: post
+            RestApiId: !Ref ProcessorApi
+      Policies:
+        - CloudWatchPutMetricPolicy: {}
+        - CloudWatchLogsFullAccess
+        - AWSXRayDaemonWriteAccess
+
+  # API Gateway
+  ProcessorApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref Stage
+      Description: API Gateway for Lambda performance comparison
+      Cors:
+        AllowMethods: "'POST, OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+
+Outputs:
+  ProcessorApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ProcessorApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
+    Export:
+      Name: !Sub "${AWS::StackName}-ProcessorApiUrl"
+      
+  ProcessorFunctionArm64Arn:
+    Description: "ARM64 Lambda Function ARN"
+    Value: !GetAtt ProcessorFunctionArm64.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-ProcessorFunctionArm64Arn"
+      
+  ProcessorFunctionX86Arn:
+    Description: "x86_64 Lambda Function ARN" 
+    Value: !GetAtt ProcessorFunctionX86.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-ProcessorFunctionX86Arn"
+
+  Arm64EndpointUrl:
+    Description: "ARM64 processing endpoint"
+    Value: !Sub "https://${ProcessorApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/process-arm64"
+    
+  X86EndpointUrl:
+    Description: "x86_64 processing endpoint"
+    Value: !Sub "https://${ProcessorApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/process-x86"

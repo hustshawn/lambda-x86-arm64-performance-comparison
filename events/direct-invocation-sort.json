@@ -1,0 +1,5 @@
+{
+  "operation": "sort_intensive",
+  "data_size": 5000,
+  "iterations": 1
+}

@@ -1,0 +1,49 @@
+# Testing and development dependencies for Lambda Performance Comparison
+
+# Core testing framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+
+# HTTP testing
+requests>=2.31.0
+
+# AWS SDK and testing
+boto3>=1.28.0
+botocore>=1.31.0
+moto>=4.2.0  # AWS service mocking for tests
+
+# Code quality and formatting
+black>=23.7.0
+flake8>=6.0.0
+isort>=5.12.0
+
+# Type checking
+mypy>=1.5.0
+types-requests>=2.31.0
+
+# Performance and system monitoring
+psutil>=5.9.0
+
+# Development utilities
+python-dotenv>=1.0.0  # Environment variable management
+tabulate>=0.9.0       # Table formatting for results
+colorama>=0.4.6       # Colored terminal output
+
+# Documentation
+mkdocs>=1.5.0         # Documentation generation
+mkdocs-material>=9.2.0
+mkdocs-mermaid2-plugin>=1.1.0
+
+# JSON handling and validation
+jsonschema>=4.19.0
+
+# Date and time utilities
+python-dateutil>=2.8.2
+
+# Statistical analysis
+statistics>=1.0.3.5   # Built-in, but explicit for clarity
+
+# Optional: Advanced performance profiling
+# py-spy>=0.3.14      # Uncomment for advanced profiling
+# memory-profiler>=0.61.0  # Uncomment for memory profiling

@@ -1,0 +1,15 @@
+{
+  "httpMethod": "POST",
+  "path": "/process-arm64",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "queryStringParameters": null,
+  "body": "{\"operation\": \"sort_intensive\", \"data_size\": 8000, \"iterations\": 1}",
+  "isBase64Encoded": false,
+  "requestContext": {
+    "httpMethod": "POST",
+    "path": "/dev/process-arm64",
+    "stage": "dev"
+  }
+}

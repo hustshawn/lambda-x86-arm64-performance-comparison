@@ -1,0 +1,5 @@
+# Python dependencies for Lambda performance comparison
+# Core dependencies will be added as implementation progresses
+boto3>=1.26.0
+psutil>=5.9.0
+requests
