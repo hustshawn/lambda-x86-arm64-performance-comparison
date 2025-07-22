@@ -28,16 +28,29 @@ This project provides a real-world performance comparison between AWS Lambda's A
 
 ## 📊 Performance Results
 
-Based on comprehensive testing, ARM64 (Graviton2) consistently outperforms x86_64:
+**Latest Test Results (July 22, 2025)** - Based on comprehensive testing in production AWS Lambda environment:
 
-| Workload Type | ARM64 Performance Advantage |
-|---------------|----------------------------|
-| Mathematical Computation | **34.7% faster** |
-| Sort Intensive | **25.7% faster** |
-| String Processing | **25.6% faster** |
-| Memory Intensive | **8.1% faster** |
+| Workload Type | ARM64 Performance Advantage | Test Details |
+|---------------|----------------------------|--------------|
+| **Mathematical Computation** | **🏆 34.3% faster** | 4,062ms vs 6,186ms |
+| **String Processing** | **🏆 34.2% faster** | 12.7ms vs 19.3ms |
+| **Sort Intensive** | **🏆 25.8% faster** | 230ms vs 310ms |
+| **Memory Intensive** | **🏆 11.8% faster** | 1,850ms vs 2,098ms |
 
-*Results may vary based on specific workloads and AWS region*
+**🎯 Final Score: ARM64: 4 | x86_64: 0**
+
+### Performance Visualization
+
+```
+Mathematical Computation:  ARM64 ████████████████████████████████████ 34.3% faster
+String Processing:         ARM64 ████████████████████████████████████ 34.2% faster  
+Sort Intensive:            ARM64 ██████████████████████████ 25.8% faster
+Memory Intensive:          ARM64 ████████████ 11.8% faster
+```
+
+> **💰 Cost Impact**: Combined with 20% lower ARM64 pricing, total cost savings range from **35-45%**
+
+*View detailed results in [PERFORMANCE_RESULTS.md](PERFORMANCE_RESULTS.md)*
 
 ## 🏗️ Architecture
 
@@ -94,16 +107,21 @@ curl -X POST https://your-api-gateway-url/process-x86 \
 
 ```bash
 # Run comprehensive performance test
-python performance_test.py
+python scripts/performance_test.py --arm64-url <your-arm64-url> --x86-url <your-x86-url>
 ```
 
 ## 📚 Documentation
 
-- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Complete deployment instructions and AWS resource details
-- **[Local Testing Guide](LOCAL_TESTING.md)** - Local development and testing with SAM CLI
-- **[API Reference](docs/API_REFERENCE.md)** - Complete API documentation
-- **[Performance Analysis](docs/PERFORMANCE_ANALYSIS.md)** - Detailed performance methodology and results
-- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to this project
+### Core Documentation
+- **[API Reference](docs/API_REFERENCE.md)** - Complete API documentation and usage examples
+- **[Performance Analysis](docs/PERFORMANCE_ANALYSIS.md)** - Detailed methodology and comprehensive results
+- **[Performance Results](PERFORMANCE_RESULTS.md)** - Latest test results and benchmarks
+- **[Project Structure](docs/PROJECT_STRUCTURE.md)** - Professional project organization guide
+
+### Development & Deployment
+- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - AWS deployment instructions and configuration
+- **[Local Development](LOCAL_TESTING.md)** - Local testing and development workflow
+- **[Contributing Guide](CONTRIBUTING.md)** - Contribution guidelines and development standards
 
 ## 🧪 Available Operations
 
@@ -166,8 +184,8 @@ Access metrics in CloudWatch under the `Lambda/PerformanceComparison` namespace.
 # Install dependencies
 pip install -r requirements_test.txt
 
-# Create environment file
-python local_test.py --help
+# Validate project setup
+python scripts/validate_setup.py
 
 # Build for local testing
 sam build
@@ -179,9 +197,12 @@ sam build
 # Direct Lambda invocation
 sam local invoke ProcessorFunctionArm64 --event events/direct-invocation-sort.json
 
-# Local API Gateway
+# Automated local testing
+python scripts/local_test.py --direct
+
+# Local API Gateway testing
 sam local start-api --port 3000
-python local_test.py --api
+python scripts/local_test.py --api
 ```
 
 ## 🔧 Configuration
