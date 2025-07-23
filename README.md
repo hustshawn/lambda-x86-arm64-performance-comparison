@@ -106,7 +106,10 @@ curl -X POST https://your-api-gateway-url/process-x86 \
 ### 3. Run Performance Comparison
 
 ```bash
-# Run comprehensive performance test
+# Run comprehensive performance test (auto-detects URLs from SAM stack)
+python scripts/performance_test.py
+
+# Or specify URLs manually if needed
 python scripts/performance_test.py --arm64-url <your-arm64-url> --x86-url <your-x86-url>
 ```
 

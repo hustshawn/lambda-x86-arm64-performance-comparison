@@ -33,9 +33,33 @@ Your Lambda Performance Comparison solution has been successfully deployed to AW
 
 ## 🧪 Testing Your Deployment
 
-### 1. Quick API Test
+### 1. Automated Performance Testing
 
-Test both endpoints to ensure they're working:
+The easiest way to test your deployment is using the automated performance test script:
+
+```bash
+# Run comprehensive performance comparison (auto-detects URLs)
+python scripts/performance_test.py
+
+# Run specific operation only
+python scripts/performance_test.py --operation mathematical_computation
+
+# Save results to file
+python scripts/performance_test.py --output results.json
+
+# Run with more iterations for better accuracy
+python scripts/performance_test.py --iterations 5
+```
+
+The script automatically:
+- Detects your stack name and region from `samconfig.toml`
+- Fetches endpoint URLs from CloudFormation stack outputs
+- Runs comprehensive tests across all operation types
+- Provides detailed performance analysis
+
+### 2. Manual API Testing
+
+Test both endpoints manually to ensure they're working:
 
 ```bash
 # Test ARM64 endpoint
@@ -47,23 +71,6 @@ curl -X POST https://e397dnqfv5.execute-api.us-west-2.amazonaws.com/dev/process-
 curl -X POST https://e397dnqfv5.execute-api.us-west-2.amazonaws.com/dev/process-x86 \
      -H 'Content-Type: application/json' \
      -d '{"operation": "mathematical_computation", "complexity": 2000, "iterations": 1}'
-```
-
-### 2. Performance Comparison Test
-
-Run a comprehensive performance comparison:
-
-```bash
-# Mathematical computation comparison
-curl -X POST https://e397dnqfv5.execute-api.us-west-2.amazonaws.com/dev/process-arm64 \
-     -H 'Content-Type: application/json' \
-     -d '{"operation": "mathematical_computation", "complexity": 3000, "iterations": 2}' \
-     | jq '.performance_metrics.execution_time_ms'
-
-curl -X POST https://e397dnqfv5.execute-api.us-west-2.amazonaws.com/dev/process-x86 \
-     -H 'Content-Type: application/json' \
-     -d '{"operation": "mathematical_computation", "complexity": 3000, "iterations": 2}' \
-     | jq '.performance_metrics.execution_time_ms'
 ```
 
 ### 3. All Operations Test

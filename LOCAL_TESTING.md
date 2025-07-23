@@ -8,6 +8,7 @@ This guide explains how to test the Lambda Performance Comparison application lo
 - Docker installed and running
 - Python 3.11 or later
 - Required Python packages: `requests`
+- AWS CLI configured (for automatic URL detection in performance tests)
 
 ## Quick Start
 
@@ -237,6 +238,35 @@ python local_test.py --direct
 sam deploy --guided
 ```
 
+### Performance Testing (Post-Deployment)
+
+After deploying to AWS, you can run comprehensive performance comparisons:
+
+```bash
+# Automatic URL detection from SAM stack
+python scripts/performance_test.py
+
+# Run specific operation only
+python scripts/performance_test.py --operation mathematical_computation
+
+# Save results to file
+python scripts/performance_test.py --output performance_results.json
+
+# Run with custom iterations
+python scripts/performance_test.py --iterations 5
+
+# Manual URL specification (if auto-detection fails)
+python scripts/performance_test.py \
+    --arm64-url https://your-api-gateway-url/dev/process-arm64 \
+    --x86-url https://your-api-gateway-url/dev/process-x86
+```
+
+The performance test script automatically:
+- Reads your `samconfig.toml` for stack name and region
+- Fetches endpoint URLs from CloudFormation stack outputs
+- Runs comprehensive tests across all operation types
+- Provides detailed performance analysis and comparison
+
 ### Continuous Testing
 
 Set up automated testing in your development workflow:
@@ -250,9 +280,15 @@ echo "Building SAM application..."
 sam build
 
 echo "Running local tests..."
-python local_test.py --direct
+python scripts/local_test.py --direct
 
-echo "All tests passed! Ready for deployment."
+echo "Deploying to AWS..."
+sam deploy
+
+echo "Running performance comparison..."
+python scripts/performance_test.py --quiet
+
+echo "All tests passed! Deployment successful."
 ```
 
-This local testing setup provides comprehensive validation of your Lambda functions before deployment to AWS.
+This local testing setup provides comprehensive validation of your Lambda functions before and after deployment to AWS.
