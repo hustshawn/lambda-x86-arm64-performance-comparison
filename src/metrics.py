@@ -21,7 +21,9 @@ logger = logging.getLogger(__name__)
 class PerformanceMetrics:
     """Collects and manages performance metrics for Lambda functions."""
 
-    def __init__(self, architecture: Optional[str] = None, function_name: Optional[str] = None):
+    def __init__(
+        self, architecture: Optional[str] = None, function_name: Optional[str] = None
+    ):
         """
         Initialize performance metrics collector.
 
