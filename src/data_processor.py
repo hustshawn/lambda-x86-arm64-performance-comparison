@@ -435,7 +435,7 @@ class DataProcessor:
             r"\b\w*test\w*\b",  # Words containing 'test'
         ]
 
-        results = {}
+        results: Dict[str, Any] = {}
         total_matches = 0
 
         for i, pattern in enumerate(patterns):
