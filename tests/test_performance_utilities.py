@@ -21,7 +21,9 @@ class TestDataGenerator:
     
     @staticmethod
     def generate_string_data(count, length):
-        return ["test" * (length // 4) for _ in range(count)]
+        # Create strings of exact length by repeating "test" and padding/truncating
+        base_string = "test" * ((length // 4) + 1)  # Ensure we have enough characters
+        return [base_string[:length] for _ in range(count)]
     
     @staticmethod
     def generate_mixed_data(size):
@@ -31,7 +33,7 @@ class TestDataGenerator:
             "nested": {"values": [1, 2, 3], "metadata": {"type": "test"}}
         }
 
-class TestResult:
+class MockTestResult:
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -55,7 +57,7 @@ class LambdaPerformanceTester:
         # Check if lambda_client should raise an exception
         if hasattr(self.lambda_client, 'invoke') and hasattr(self.lambda_client.invoke, 'side_effect'):
             if self.lambda_client.invoke.side_effect:
-                return TestResult(
+                return MockTestResult(
                     status="error",
                     error_message=str(self.lambda_client.invoke.side_effect)
                 )
@@ -66,7 +68,7 @@ class LambdaPerformanceTester:
             if mock_response and "Payload" in mock_response:
                 payload_data = json.loads(mock_response["Payload"].read().decode())
                 perf_data = payload_data.get("performance", {})
-                return TestResult(
+                return MockTestResult(
                     status="success",
                     architecture=architecture,
                     execution_time_ms=perf_data.get("execution_time_ms", 100.0),
@@ -75,7 +77,7 @@ class LambdaPerformanceTester:
                 )
         
         # Default response
-        return TestResult(
+        return MockTestResult(
             status="success",
             architecture=architecture,
             execution_time_ms=100.0,
@@ -267,7 +269,7 @@ class TestLambdaPerformanceTester(unittest.TestCase):
         """Test statistical analysis calculation."""
         # Create sample test results
         results = [
-            TestResult(
+            MockTestResult(
                 architecture="arm64",
                 function_name="test-arm64",
                 operation="sort",
@@ -279,7 +281,7 @@ class TestLambdaPerformanceTester(unittest.TestCase):
                 timestamp="2024-01-01T00:00:00",
                 status="success",
             ),
-            TestResult(
+            MockTestResult(
                 architecture="arm64",
                 function_name="test-arm64",
                 operation="sort",
@@ -291,7 +293,7 @@ class TestLambdaPerformanceTester(unittest.TestCase):
                 timestamp="2024-01-01T00:01:00",
                 status="success",
             ),
-            TestResult(
+            MockTestResult(
                 architecture="x86_64",
                 function_name="test-x86",
                 operation="sort",
@@ -303,7 +305,7 @@ class TestLambdaPerformanceTester(unittest.TestCase):
                 timestamp="2024-01-01T00:02:00",
                 status="success",
             ),
-            TestResult(
+            MockTestResult(
                 architecture="x86_64",
                 function_name="test-x86",
                 operation="sort",
@@ -382,8 +384,8 @@ class TestDataStructures(unittest.TestCase):
     """Test cases for data structures."""
 
     def test_test_result_creation(self):
-        """Test TestResult data class creation."""
-        result = TestResult(
+        """Test MockTestResult data class creation."""
+        result = MockTestResult(
             architecture="arm64",
             function_name="test-function",
             operation="sort",
