@@ -1,21 +1,22 @@
 {
   "mcpServers": {
-    "awslabs.aws-serverless-mcp-server": {
-      "command": "uvx",
+    "github": {
+      "command": "docker",
       "args": [
-        "awslabs.aws-serverless-mcp-server@latest",
-        "--allow-write",
-        "--allow-sensitive-data-access"
+        "run",
+        "-i",
+        "--rm",
+        "--env-file",
+        ".kiro/settings/.env",
+        "ghcr.io/github/github-mcp-server"
       ],
-      "env": {
-        "AWS_PROFILE": "default",
-        "AWS_REGION": "us-west-2"
-      },
       "disabled": false,
       "autoApprove": [
-        "get_lambda_guidance",
-        "get_iac_guidance",
-        "get_lambda_event_schemas"
+        "get_me",
+        "list_workflows",
+        "list_workflow_runs",
+        "list_workflow_jobs",
+        "get_job_logs"
       ]
     }
   }
