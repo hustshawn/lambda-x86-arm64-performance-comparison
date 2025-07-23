@@ -5,9 +5,8 @@ Unit tests for the performance metrics collection module.
 import unittest
 import time
 import os
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 import sys
-import json
 
 # Add src directory to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))

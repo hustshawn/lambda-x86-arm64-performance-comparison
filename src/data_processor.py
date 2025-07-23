@@ -7,7 +7,7 @@ import random
 import math
 import time
 import hashlib
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any
 from decimal import Decimal, getcontext
 
 
@@ -25,7 +25,7 @@ class DataProcessor:
         CPU-intensive sorting workload using multiple algorithms.
         Tests integer operations and memory access patterns.
         """
-        results = {
+        results: Dict[str, Any] = {
             "operation": "sort_intensive",
             "data_size": data_size,
             "iterations": iterations,
@@ -79,7 +79,7 @@ class DataProcessor:
         Mathematical computation workload with floating-point and decimal operations.
         Tests FPU performance and precision arithmetic.
         """
-        results = {
+        results: Dict[str, Any] = {
             "operation": "mathematical_computation",
             "complexity": complexity,
             "iterations": iterations,
@@ -142,7 +142,7 @@ class DataProcessor:
         String processing workload with pattern matching and text manipulation.
         Tests string operations and memory allocation patterns.
         """
-        results = {
+        results: Dict[str, Any] = {
             "operation": "string_processing",
             "text_size": text_size,
             "iterations": iterations,
@@ -199,7 +199,7 @@ class DataProcessor:
         """
         Memory-intensive workload to test memory bandwidth and allocation patterns.
         """
-        results = {
+        results: Dict[str, Any] = {
             "operation": "memory_intensive",
             "memory_size_mb": memory_size_mb,
             "iterations": iterations,
@@ -472,7 +472,7 @@ class DataProcessor:
 
     def _string_compression_simulation(self, text: str) -> Dict[str, Any]:
         """Simulate string compression by counting character frequencies."""
-        char_freq = {}
+        char_freq: Dict[str, int] = {}
         for char in text:
             char_freq[char] = char_freq.get(char, 0) + 1
 
@@ -487,7 +487,7 @@ class DataProcessor:
             "original_length": total_chars,
             "unique_characters": unique_chars,
             "most_frequent_char": (
-                max(char_freq, key=char_freq.get) if char_freq else ""
+                max(char_freq, key=lambda x: char_freq[x]) if char_freq else ""
             ),
             "compression_ratio_estimate": compression_ratio,
             "character_frequencies": dict(
@@ -500,7 +500,7 @@ class DataProcessor:
         words = text.lower().split()
 
         # Word frequency analysis
-        word_freq = {}
+        word_freq: Dict[str, int] = {}
         for word in words:
             # Remove punctuation
             clean_word = "".join(c for c in word if c.isalnum())

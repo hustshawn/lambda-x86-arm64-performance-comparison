@@ -7,8 +7,7 @@ import unittest
 import json
 import sys
 import os
-from unittest.mock import Mock, patch, MagicMock
-from datetime import datetime
+from unittest.mock import Mock, patch
 
 # Add parent directory to path to import performance_test
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

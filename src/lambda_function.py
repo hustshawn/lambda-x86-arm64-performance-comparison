@@ -9,7 +9,7 @@ import json
 import os
 import logging
 import traceback
-from typing import Dict, Any, Optional, Union
+from typing import Dict, Any, Optional
 
 # Import our custom modules
 from data_processor import process_workload

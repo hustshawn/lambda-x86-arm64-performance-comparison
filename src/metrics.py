@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class PerformanceMetrics:
     """Collects and manages performance metrics for Lambda functions."""
 
-    def __init__(self, architecture: str = None, function_name: str = None):
+    def __init__(self, architecture: Optional[str] = None, function_name: Optional[str] = None):
         """
         Initialize performance metrics collector.
 
@@ -44,9 +44,9 @@ class PerformanceMetrics:
             logger.warning(f"Failed to initialize CloudWatch client: {e}")
 
         # Metrics storage
-        self.metrics_data = {}
-        self.start_times = {}
-        self.memory_samples = []
+        self.metrics_data: Dict[str, Dict[str, Any]] = {}
+        self.start_times: Dict[str, float] = {}
+        self.memory_samples: List[float] = []
 
     def _detect_architecture(self) -> str:
         """Detect the current architecture."""
@@ -155,7 +155,7 @@ class PerformanceMetrics:
         data_size: int = 0,
         iterations: int = 1,
         cold_start: bool = False,
-        additional_metrics: Dict[str, Any] = None,
+        additional_metrics: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Record comprehensive metrics for an operation.
@@ -293,7 +293,7 @@ class PerformanceMetrics:
 
             # Send metrics to CloudWatch
             if metric_data:
-                response = self.cloudwatch.put_metric_data(
+                self.cloudwatch.put_metric_data(
                     Namespace=namespace, MetricData=metric_data
                 )
                 logger.info(
@@ -378,7 +378,7 @@ class MetricsContext:
 
 
 def create_metrics_collector(
-    architecture: str = None, function_name: str = None
+    architecture: Optional[str] = None, function_name: Optional[str] = None
 ) -> PerformanceMetrics:
     """
     Factory function to create a PerformanceMetrics instance.
